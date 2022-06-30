@@ -11,5 +11,9 @@
         public int Day2 { get; set; }
         public int Day3 { get; set; }
         public int Day4 { get; set; }
+
+        public int TotalSalaryPerWeek { get; set; }
+        
+        
     }
 }

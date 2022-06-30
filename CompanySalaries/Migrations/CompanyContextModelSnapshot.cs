@@ -56,8 +56,14 @@ namespace CompanySalaries.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TaskWorkId")
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ObjectiveId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("WorkedHoursOnTask")
                         .HasColumnType("int");
@@ -66,7 +72,7 @@ namespace CompanySalaries.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.HasIndex("TaskWorkId");
+                    b.HasIndex("ObjectiveId");
 
                     b.ToTable("EmployeesTask", (string)null);
                 });
@@ -100,6 +106,9 @@ namespace CompanySalaries.Migrations
                     b.Property<DateTime>("StartWeek")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TotalSalaryPerWeek")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
@@ -107,7 +116,7 @@ namespace CompanySalaries.Migrations
                     b.ToTable("EmployeesWorkingWeek", (string)null);
                 });
 
-            modelBuilder.Entity("CompanySalaries.Models.TaskWork", b =>
+            modelBuilder.Entity("CompanySalaries.Models.Objective", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,9 +135,63 @@ namespace CompanySalaries.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeOfObjectiveId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("TasksWork", (string)null);
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("TypeOfObjectiveId");
+
+                    b.ToTable("Objectives", (string)null);
+                });
+
+            modelBuilder.Entity("CompanySalaries.Models.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Projects", (string)null);
+                });
+
+            modelBuilder.Entity("CompanySalaries.Models.TypeOfObjective", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypeOfTask")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypeOfObjectives", (string)null);
                 });
 
             modelBuilder.Entity("CompanySalaries.Models.EmployeeTask", b =>
@@ -139,15 +202,15 @@ namespace CompanySalaries.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CompanySalaries.Models.TaskWork", "TaskWork")
+                    b.HasOne("CompanySalaries.Models.Objective", "Objective")
                         .WithMany()
-                        .HasForeignKey("TaskWorkId")
+                        .HasForeignKey("ObjectiveId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
 
-                    b.Navigation("TaskWork");
+                    b.Navigation("Objective");
                 });
 
             modelBuilder.Entity("CompanySalaries.Models.EmployeeWorkingWeek", b =>
@@ -159,6 +222,25 @@ namespace CompanySalaries.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("CompanySalaries.Models.Objective", b =>
+                {
+                    b.HasOne("CompanySalaries.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CompanySalaries.Models.TypeOfObjective", "TypeOfObjective")
+                        .WithMany()
+                        .HasForeignKey("TypeOfObjectiveId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("TypeOfObjective");
                 });
 #pragma warning restore 612, 618
         }

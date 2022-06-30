@@ -18,7 +18,6 @@ builder.Services.AddDbContext<CompanyContext>(options =>
 });
 
 builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddTransient<ITaskWorkRepository, TaskWorkRepository>();
 
 
 var app = builder.Build();

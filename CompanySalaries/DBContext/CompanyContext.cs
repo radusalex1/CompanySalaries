@@ -11,17 +11,20 @@ namespace CompanySalaries.DBContext
         }
 
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<TaskWork> TasksWork { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Objective> Objectives { get; set; }
+        public DbSet<TypeOfObjective> TypeOfObjectives { get; set; }
         public DbSet<EmployeeWorkingWeek> EmployeesWorkingWeek { get; set; }
         public DbSet<EmployeeTask> EmployeesTask { get; set; }
 
         protected override void OnModelCreating(ModelBuilder model)
         {
             model.Entity<Employee>().ToTable("Employees");
-            model.Entity<TaskWork>().ToTable("TasksWork");
+            model.Entity<Project>().ToTable("Projects");
+            model.Entity<Objective>().ToTable("Objectives");
+            model.Entity<TypeOfObjective>().ToTable("TypeOfObjectives");
             model.Entity<EmployeeWorkingWeek>().ToTable("EmployeesWorkingWeek");
             model.Entity<EmployeeTask>().ToTable("EmployeesTask");
-
         }
     }
 }
