@@ -24,6 +24,12 @@ namespace CompanySalaries.Controllers
         public IEnumerable<EmployeeReportDTO> GetWeeklyReport(DateTime StartWeek)
         {
             var EmployeesTaskLastWeek = employeeTaskRepository.GetByStartWeek(StartWeek);
+            var grouped = EmployeesTaskLastWeek.GroupBy(e => e.Employee.Name);
+
+            foreach(var group in grouped)
+            {
+                
+            }
             var result = new List<EmployeeReportDTO>();
             return result;
            
