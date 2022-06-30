@@ -6,5 +6,6 @@ namespace CompanySalaries.Repositories
     {
         public void AddEmployee(Employee employee);
         public IEnumerable<Employee> GetAllEmployees();
+        public Employee GetEmployeeByName(string name);
     }
 }

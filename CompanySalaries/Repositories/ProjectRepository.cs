@@ -21,5 +21,11 @@ namespace CompanySalaries.Repositories
         {
             return _companyContext.Projects.ToList();
         }
+
+        public Project GetProjectByName(string name)
+        {
+            return _companyContext.Projects.FirstOrDefault(p => p.Name == name);
+
+        }
     }
 }

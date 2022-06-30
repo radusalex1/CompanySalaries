@@ -1,5 +1,6 @@
 ﻿using CompanySalaries.DBContext;
 using CompanySalaries.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CompanySalaries.Repositories
 {
@@ -19,7 +20,18 @@ namespace CompanySalaries.Repositories
 
         public IEnumerable<Objective> GetAllObjectives()
         {
-            return _companyContext.Objectives.ToList();
+            return _companyContext.Objectives
+                .Include(o=>o.TypeOfObjective)
+                .Include(o=>o.Project)
+                .ToList();
+        }
+
+        public Objective GetObjectiveByName(string name)
+        {
+            return _companyContext.Objectives
+                .Include(o=>o.TypeOfObjective)
+                .Include(o => o.Project)
+                .Where(o=>o.Name==name).FirstOrDefault();
         }
     }
 }

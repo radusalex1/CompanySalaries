@@ -14,10 +14,17 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CompanyContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-
 });
 
 builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddTransient<IObjectiveRepository, ObjectiveRepository>();
+builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
+builder.Services.AddTransient<IEmployeeWorkingWeekRepository, EmployeeWorkingWeekRepository>();
+builder.Services.AddTransient<IObjectiveRepository, ObjectiveRepository>();
+builder.Services.AddTransient<ITypeOfObjectiveRepository, TypeOfObjectiveRepository>();
+builder.Services.AddTransient<IEmployeeTaskRepository, EmployeeTaskRepository>();
+
+
 
 
 var app = builder.Build();

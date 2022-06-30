@@ -21,5 +21,10 @@ namespace CompanySalaries.Repositories
         {
             return _companyContext.Employees.ToList();
         }
+
+        public Employee GetEmployeeByName(string name)
+        {
+            return _companyContext.Employees.FirstOrDefault(x=>x.Name == name);
+        }
     }
 }

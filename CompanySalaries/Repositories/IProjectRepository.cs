@@ -6,5 +6,6 @@ namespace CompanySalaries.Repositories
     {
         public void AddProject(Project project);
         public IEnumerable<Project> GetAllProjects();
+        public Project GetProjectByName(string name);
     }
 }

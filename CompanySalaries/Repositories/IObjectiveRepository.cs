@@ -6,5 +6,6 @@ namespace CompanySalaries.Repositories
     {
         public void AddObjective(Objective objective);
         public IEnumerable<Objective> GetAllObjectives();
+        public Objective GetObjectiveByName(string name);
     }
 }

@@ -1,11 +1,9 @@
-﻿namespace CompanySalaries.Models
+﻿namespace CompanySalaries.DTO
 {
-    public class EmployeeTask
+    public class EmployeeTaskDTO
     {
-        public int Id { get; set; }
-
-        public Employee Employee { get; set; }
-        public Objective Objective { get; set; }
+        public string EmployeeName { get; set; }
+        public string ObjectiveName { get; set; }
 
         public DateTime StartWeek { get; set; }
         public DateTime StartTime { get; set; }
