@@ -31,5 +31,24 @@ namespace CompanySalaries.Repositories
         {
             return _companyContext.EmployeesTask.ToList();
         }
+
+        public int GetHoursByObjective(Objective objective)
+        {
+            return _companyContext.EmployeesTask.FirstOrDefault(x => x.Objective == objective).WorkedHoursOnTask;
+        }
+
+        public bool IsEmployeeTaskDone(Objective objective)
+        {
+            var result = _companyContext.EmployeesTask.FirstOrDefault(x => x.Objective == objective);
+
+            if(result.Done==1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
