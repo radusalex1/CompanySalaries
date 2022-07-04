@@ -7,7 +7,7 @@ namespace CompanySalaries.Repositories
         public void AddEmployeeTask(EmployeeTask employeeTask);
         public IEnumerable<EmployeeTask> GetEmployeeTasks();
         public IEnumerable<EmployeeTask> GetByStartWeek(DateTime startWeek);
-        public bool IsEmployeeTaskDone(Objective objective);
-        public int GetHoursByObjective(Objective objective);
+        public bool IsEmployeeTaskDone(WorkTask WorkTask);
+        public int GetHoursByWorkTask(WorkTask WorkTask);
     }
 }

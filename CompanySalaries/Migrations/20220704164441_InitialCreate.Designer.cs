@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompanySalaries.Migrations
 {
     [DbContext(typeof(CompanyContext))]
-    [Migration("20220630115318_InitialCreate")]
+    [Migration("20220704164441_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,10 @@ namespace CompanySalaries.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -61,11 +65,14 @@ namespace CompanySalaries.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ObjectiveId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartWeek")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WorkTaskId")
+                        .HasColumnType("int");
 
                     b.Property<int>("WorkedHoursOnTask")
                         .HasColumnType("int");
@@ -74,82 +81,9 @@ namespace CompanySalaries.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.HasIndex("ObjectiveId");
+                    b.HasIndex("WorkTaskId");
 
                     b.ToTable("EmployeesTask", (string)null);
-                });
-
-            modelBuilder.Entity("CompanySalaries.Models.EmployeeWorkingWeek", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Day0")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Day1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Day2")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Day3")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Day4")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartWeek")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TotalSalaryPerWeek")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("EmployeesWorkingWeek", (string)null);
-                });
-
-            modelBuilder.Entity("CompanySalaries.Models.Objective", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TypeOfObjectiveId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("TypeOfObjectiveId");
-
-                    b.ToTable("Objectives", (string)null);
                 });
 
             modelBuilder.Entity("CompanySalaries.Models.Project", b =>
@@ -176,7 +110,7 @@ namespace CompanySalaries.Migrations
                     b.ToTable("Projects", (string)null);
                 });
 
-            modelBuilder.Entity("CompanySalaries.Models.TypeOfObjective", b =>
+            modelBuilder.Entity("CompanySalaries.Models.TypeOfWorkTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -193,7 +127,41 @@ namespace CompanySalaries.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TypeOfObjectives", (string)null);
+                    b.ToTable("TypeOfWorkTasks", (string)null);
+                });
+
+            modelBuilder.Entity("CompanySalaries.Models.WorkTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeOfWorkTaskId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("TypeOfWorkTaskId");
+
+                    b.ToTable("WorkTasks", (string)null);
                 });
 
             modelBuilder.Entity("CompanySalaries.Models.EmployeeTask", b =>
@@ -204,29 +172,18 @@ namespace CompanySalaries.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CompanySalaries.Models.Objective", "Objective")
+                    b.HasOne("CompanySalaries.Models.WorkTask", "WorkTask")
                         .WithMany()
-                        .HasForeignKey("ObjectiveId")
+                        .HasForeignKey("WorkTaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
 
-                    b.Navigation("Objective");
+                    b.Navigation("WorkTask");
                 });
 
-            modelBuilder.Entity("CompanySalaries.Models.EmployeeWorkingWeek", b =>
-                {
-                    b.HasOne("CompanySalaries.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("CompanySalaries.Models.Objective", b =>
+            modelBuilder.Entity("CompanySalaries.Models.WorkTask", b =>
                 {
                     b.HasOne("CompanySalaries.Models.Project", "Project")
                         .WithMany()
@@ -234,15 +191,15 @@ namespace CompanySalaries.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CompanySalaries.Models.TypeOfObjective", "TypeOfObjective")
+                    b.HasOne("CompanySalaries.Models.TypeOfWorkTask", "TypeOfWorkTask")
                         .WithMany()
-                        .HasForeignKey("TypeOfObjectiveId")
+                        .HasForeignKey("TypeOfWorkTaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Project");
 
-                    b.Navigation("TypeOfObjective");
+                    b.Navigation("TypeOfWorkTask");
                 });
 #pragma warning restore 612, 618
         }

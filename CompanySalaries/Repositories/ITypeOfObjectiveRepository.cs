@@ -2,10 +2,10 @@
 
 namespace CompanySalaries.Repositories
 {
-    public interface ITypeOfObjectiveRepository
+    public interface ITypeOfWorkTaskRepository
     {
-        public void AddType(TypeOfObjective typeOfObjective);
-        public IEnumerable<TypeOfObjective> GetAllTypes();
-        public TypeOfObjective GetByName(string name);
+        public void AddType(TypeOfWorkTask typeOfWorkTask);
+        public IEnumerable<TypeOfWorkTask> GetAllTypes();
+        public TypeOfWorkTask GetByName(string name);
     }
 }

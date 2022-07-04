@@ -21,9 +21,9 @@ namespace CompanySalaries.Repositories
         {
             return _companyContext.EmployeesTask
                 .Include(e=>e.Employee)
-                .Include(e=>e.Objective)
-                .Include(e=>e.Objective.Project)
-                .Include(e=>e.Objective.TypeOfObjective)
+                .Include(e=>e.WorkTask)
+                .Include(e=>e.WorkTask.Project)
+                .Include(e=>e.WorkTask.TypeOfWorkTask)
                 .Where(e=>e.StartWeek.Date<=startWeek.Date && startWeek.Date<=e.StartWeek.AddDays(7)).ToList();
         }
 
@@ -32,14 +32,14 @@ namespace CompanySalaries.Repositories
             return _companyContext.EmployeesTask.ToList();
         }
 
-        public int GetHoursByObjective(Objective objective)
+        public int GetHoursByWorkTask(WorkTask WorkTask)
         {
-            return _companyContext.EmployeesTask.FirstOrDefault(x => x.Objective == objective).WorkedHoursOnTask;
+            return _companyContext.EmployeesTask.FirstOrDefault(x => x.WorkTask == WorkTask).WorkedHoursOnTask;
         }
 
-        public bool IsEmployeeTaskDone(Objective objective)
+        public bool IsEmployeeTaskDone(WorkTask WorkTask)
         {
-            var result = _companyContext.EmployeesTask.FirstOrDefault(x => x.Objective == objective);
+            var result = _companyContext.EmployeesTask.FirstOrDefault(x => x.WorkTask == WorkTask);
 
             if(result.Done==1)
             {

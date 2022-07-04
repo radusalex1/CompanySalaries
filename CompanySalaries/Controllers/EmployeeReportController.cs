@@ -1,7 +1,6 @@
 ﻿using CompanySalaries.DTO;
 using CompanySalaries.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace CompanySalaries.Controllers
 {
@@ -10,77 +9,84 @@ namespace CompanySalaries.Controllers
     public class EmployeeReportController : ControllerBase
     {
         public IEmployeeRepository employeeRepository;
-        public IObjectiveRepository objectiveRepository;
+        public IWorkTaskRepository WorkTaskRepository;
         public IEmployeeTaskRepository employeeTaskRepository;
 
 
-        public EmployeeReportController(IEmployeeRepository employeeRepository, IObjectiveRepository objectiveRepository, IEmployeeTaskRepository employeeTaskRepository)
+        public EmployeeReportController(IEmployeeRepository employeeRepository, IWorkTaskRepository WorkTaskRepository, IEmployeeTaskRepository employeeTaskRepository)
         {
             this.employeeRepository = employeeRepository;
-            this.objectiveRepository = objectiveRepository;
+            this.WorkTaskRepository = WorkTaskRepository;
             this.employeeTaskRepository = employeeTaskRepository;
         }
 
+        /// <summary>
+        /// This method should get a refactor. - by radu
+        /// </summary>
+        /// <param name="StartWeek"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("/GetWeeklyReport")]
         public IEnumerable<EmployeeReportDTO> GetWeeklyReport(DateTime StartWeek)
         {
-            var EmployeesTaskLastWeek = employeeTaskRepository.GetByStartWeek(StartWeek);
-            var grouped = EmployeesTaskLastWeek.GroupBy(e => e.Employee).ToDictionary(gdc => gdc.Key, gdc => gdc.ToList());
+            var groupedByEmployee = employeeTaskRepository.GetByStartWeek(StartWeek)
+                .GroupBy(e => e.Employee)
+                .ToDictionary(gdc => gdc.Key, gdc => gdc.ToList());
             var result = new List<EmployeeReportDTO>();
 
-            foreach (var group in grouped)
+            foreach (var group in groupedByEmployee)
             {
-                var workedHours = 0;
-                var moneyPerObjective = 0;
-                var projectName = string.Empty;
-                var objectiveName = string.Empty;
-                var objectiveReportDTOList = new List<ObjectiveReportDTO>();
-                var weeklySalary = 0;
-
-                foreach (var item in group.Value)
-                {
-                    workedHours = item.WorkedHoursOnTask;
-
-                    if (item.Objective.TypeOfObjective.Name == "special")
-                    {
-                        if (employeeTaskRepository.IsEmployeeTaskDone(item.Objective) == true)
-                        {
-                            moneyPerObjective = item.Objective.Price;
-                        }
-                    }
-                    else
-                    {
-                        moneyPerObjective = employeeTaskRepository.GetHoursByObjective(item.Objective) * group.Key.SalaryPerHour;
-                    }
-
-                    weeklySalary += moneyPerObjective;
-                    projectName = item.Objective.Project.Name;
-                    objectiveName = item.Objective.Name;
-
-                    var objectiveReportDTO = new ObjectiveReportDTO
-                    {
-                        ProjectName = projectName,
-                        ObjectiveName = objectiveName,
-                        WorkedHours = workedHours,
-                        MoneyPerObjective = moneyPerObjective,
-                    };
-                    objectiveReportDTOList.Add(objectiveReportDTO); 
-
-                }
+                List<WorkTaskReportDTO> WorkTaskReportDTOList;
+                int weeklySalary=0;
+                CalculateWorkTaskReportDTOForEmployee(group, out WorkTaskReportDTOList, out weeklySalary);
                 var employeeReportDTO = new EmployeeReportDTO()
                 {
                     EmployeeName = group.Key.Name,
-                    objectiveReportDTOs = objectiveReportDTOList,
+                    WorkTaskReportDTOs = WorkTaskReportDTOList,
                     WeeklySalary = weeklySalary
                 };
-
                 result.Add(employeeReportDTO);
-
             }
-            
             return result;
+        }
 
+        private void CalculateWorkTaskReportDTOForEmployee(KeyValuePair<Models.Employee, List<Models.EmployeeTask>> group, out List<WorkTaskReportDTO> WorkTaskReportDTOList, out int weeklySalary)
+        {
+            var workedHours = 0;
+            var moneyPerWorkTask = 0;
+            var projectName = string.Empty;
+            var WorkTaskName = string.Empty;
+            WorkTaskReportDTOList = new List<WorkTaskReportDTO>();
+            weeklySalary = 0;
+            foreach (var item in group.Value)
+            {
+                workedHours = item.WorkedHoursOnTask;
+
+                if (item.WorkTask.TypeOfWorkTask.Name == "special")
+                {
+                    if (employeeTaskRepository.IsEmployeeTaskDone(item.WorkTask) == true)
+                    {
+                        moneyPerWorkTask = item.WorkTask.Price;
+                    }
+                }
+                else
+                {
+                    moneyPerWorkTask = employeeTaskRepository.GetHoursByWorkTask(item.WorkTask) * group.Key.SalaryPerHour;
+                }
+
+                weeklySalary += moneyPerWorkTask;
+                projectName = item.WorkTask.Project.Name;
+                WorkTaskName = item.WorkTask.Name;
+
+                var WorkTaskReportDTO = new WorkTaskReportDTO
+                {
+                    ProjectName = projectName,
+                    WorkTaskName = WorkTaskName,
+                    WorkedHours = workedHours,
+                    MoneyPerWorkTask = moneyPerWorkTask,
+                };
+                WorkTaskReportDTOList.Add(WorkTaskReportDTO);
+            }
         }
     }
 }

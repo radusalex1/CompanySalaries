@@ -2,21 +2,21 @@
 
 namespace CompanySalaries.Validations
 {
-    static class ObjectiveValidations
+    static class WorkTaskValidations
     {
-        static public  bool ValidateObjective(Objective objective)
+        static public  bool ValidateWorkTask(WorkTask WorkTask)
         {
-            if(objective == null)
+            if(WorkTask == null)
             {
                 return false;
             }
 
-            if(objective.TypeOfObjective.Name == "normal" && objective.Price!=0)
+            if(WorkTask.TypeOfWorkTask.Name == "normal" && WorkTask.Price!=0)
             {
                 return false;
             }
 
-            if (objective.TypeOfObjective.Name == "special" && objective.Price == 0)
+            if (WorkTask.TypeOfWorkTask.Name == "special" && WorkTask.Price == 0)
             {
                 return false;
             }

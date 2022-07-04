@@ -1,6 +1,6 @@
 ﻿namespace CompanySalaries.Models
 {
-    public class TypeOfObjective
+    public class TypeOfWorkTask
     {
         public int Id { get; set; }
         public string Name { get; set; }

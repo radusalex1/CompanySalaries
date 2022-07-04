@@ -13,13 +13,13 @@ namespace CompanySalaries.Controllers
 
         public IEmployeeTaskRepository employeeTaskRepository;
         public IEmployeeRepository employeeRepository;
-        public IObjectiveRepository objectiveRepository;
+        public IWorkTaskRepository WorkTaskRepository;
 
-        public EmployeeTaskController(IEmployeeTaskRepository employeeTaskRepository,IEmployeeRepository employeeRepository,IObjectiveRepository objectiveRepository)
+        public EmployeeTaskController(IEmployeeTaskRepository employeeTaskRepository,IEmployeeRepository employeeRepository,IWorkTaskRepository WorkTaskRepository)
         {
             this.employeeTaskRepository = employeeTaskRepository;
             this.employeeRepository = employeeRepository;
-            this.objectiveRepository = objectiveRepository;
+            this.WorkTaskRepository = WorkTaskRepository;
         }
 
         [HttpGet]
@@ -31,12 +31,20 @@ namespace CompanySalaries.Controllers
 
         [HttpPost]
         [Route("/AddEmployeeTask")]
-        public void AddEmployeeTask(EmployeeTaskDTO employeeTaskDTO)
+        public async Task<IActionResult> AddEmployeeTask(EmployeeTaskDTO employeeTaskDTO)
         {
+            var employee = employeeRepository.GetEmployeeById(employeeTaskDTO.EmployeeId);
+            var worktask = WorkTaskRepository.GetWorkTaskById(employeeTaskDTO.WorkTaskId);
+
+            if(employee == null || worktask==null)
+            {
+                return BadRequest("Invalid employee or worktask");
+            }
+
             var employeeTask = new EmployeeTask
             {
-                Employee = employeeRepository.GetEmployeeByName(employeeTaskDTO.EmployeeName),
-                Objective = objectiveRepository.GetObjectiveByName(employeeTaskDTO.ObjectiveName),  
+                Employee = employee,
+                WorkTask = worktask,  
                 StartWeek = employeeTaskDTO.StartWeek,
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now,
@@ -44,6 +52,7 @@ namespace CompanySalaries.Controllers
                 Done = employeeTaskDTO.Done
             };
             employeeTaskRepository.AddEmployeeTask(employeeTask);
+            return Ok("Data inserted successfully");
         }
     }
 }

@@ -17,14 +17,11 @@ builder.Services.AddDbContext<CompanyContext>(options =>
 });
 
 builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddTransient<IObjectiveRepository, ObjectiveRepository>();
+builder.Services.AddTransient<IWorkTaskRepository, WorkTaskRepository>();
 builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
-builder.Services.AddTransient<IEmployeeWorkingWeekRepository, EmployeeWorkingWeekRepository>();
-builder.Services.AddTransient<IObjectiveRepository, ObjectiveRepository>();
-builder.Services.AddTransient<ITypeOfObjectiveRepository, TypeOfObjectiveRepository>();
+builder.Services.AddTransient<IWorkTaskRepository, WorkTaskRepository>();
+builder.Services.AddTransient<ITypeOfWorkTaskRepository, TypeOfWorkTaskRepository>();
 builder.Services.AddTransient<IEmployeeTaskRepository, EmployeeTaskRepository>();
-
-
 
 
 var app = builder.Build();

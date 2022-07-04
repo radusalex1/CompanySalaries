@@ -2,8 +2,8 @@
 {
     public class EmployeeTaskDTO
     {
-        public string EmployeeName { get; set; }
-        public string ObjectiveName { get; set; }
+        public int EmployeeId { get; set; }
+        public int WorkTaskId { get; set; }
 
         public DateTime StartWeek { get; set; }
         public DateTime StartTime { get; set; }

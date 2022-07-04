@@ -24,9 +24,17 @@ namespace CompanySalaries.Controllers
 
         [HttpPost]
         [Route("/AddEmployee")]
-        public void AddEmployee(Employee employee)
+        public async Task<IActionResult> AddEmployee(Employee employee)
         {
-            employeeRepository.AddEmployee(employee);
+            if (!employeeRepository.Exists(employee))
+            {
+                employeeRepository.AddEmployee(employee);
+            }
+            else
+            {
+                return BadRequest("Employee already exists");
+            }
+            return Ok("Employee added successfully");
         }
 
     }

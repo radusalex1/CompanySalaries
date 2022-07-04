@@ -6,27 +6,27 @@ namespace CompanySalaries.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TypeOfObjectiveController:ControllerBase
+    public class TypeOfWorkTaskController:ControllerBase
     {
-        public ITypeOfObjectiveRepository typeOfObjectiveRepository;
+        public ITypeOfWorkTaskRepository typeOfWorkTaskRepository;
 
-        public TypeOfObjectiveController(ITypeOfObjectiveRepository typeOfObjectiveRepository)
+        public TypeOfWorkTaskController(ITypeOfWorkTaskRepository typeOfWorkTaskRepository)
         {
-            this.typeOfObjectiveRepository = typeOfObjectiveRepository;
+            this.typeOfWorkTaskRepository = typeOfWorkTaskRepository;
         }
 
         [HttpGet]
         [Route("/GetAllTypes")]
-        public IEnumerable<TypeOfObjective> GetAllTypes()
+        public IEnumerable<TypeOfWorkTask> GetAllTypes()
         {
-            return typeOfObjectiveRepository.GetAllTypes();
+            return typeOfWorkTaskRepository.GetAllTypes();
         }
 
         [HttpPost]
-        [Route("/AddTypeOfObjective")]
-        public void AddType(TypeOfObjective typeOfObjective)
+        [Route("/AddTypeOfWorkTask")]
+        public void AddType(TypeOfWorkTask typeOfWorkTask)
         {
-            typeOfObjectiveRepository.AddType(typeOfObjective);
+            typeOfWorkTaskRepository.AddType(typeOfWorkTask);
         }
     }
 }

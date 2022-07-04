@@ -3,27 +3,27 @@ using CompanySalaries.Models;
 
 namespace CompanySalaries.Repositories
 {
-    public class TypeOfObjectiveRepository : BaseRepository, ITypeOfObjectiveRepository
+    public class TypeOfWorkTaskRepository : BaseRepository, ITypeOfWorkTaskRepository
     {
-        public TypeOfObjectiveRepository(CompanyContext companyContext) : base(companyContext)
+        public TypeOfWorkTaskRepository(CompanyContext companyContext) : base(companyContext)
         {
 
         }
 
-        public void AddType(TypeOfObjective typeOfObjective)
+        public void AddType(TypeOfWorkTask typeOfWorkTask)
         {
-            _companyContext.TypeOfObjectives.Add(typeOfObjective);
+            _companyContext.TypeOfWorkTasks.Add(typeOfWorkTask);
             _companyContext.SaveChanges();
         }
 
-        public IEnumerable<TypeOfObjective> GetAllTypes()
+        public IEnumerable<TypeOfWorkTask> GetAllTypes()
         {
-            return _companyContext.TypeOfObjectives.ToList();
+            return _companyContext.TypeOfWorkTasks.ToList();
         }
 
-        public TypeOfObjective GetByName(string name)
+        public TypeOfWorkTask GetByName(string name)
         {
-            return _companyContext.TypeOfObjectives.FirstOrDefault(t=>t.Name== name);
+            return _companyContext.TypeOfWorkTasks.FirstOrDefault(t=>t.Name== name);
         }
     }
 }
