@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompanySalaries.Migrations
 {
     [DbContext(typeof(CompanyContext))]
-    [Migration("20220704164441_InitialCreate")]
+    [Migration("20220707172953_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,12 +61,6 @@ namespace CompanySalaries.Migrations
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartWeek")
                         .HasColumnType("datetime2");

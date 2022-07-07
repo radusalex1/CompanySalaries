@@ -40,5 +40,10 @@ namespace CompanySalaries.Repositories
                 .Include(o => o.Project)
                 .Where(o=>o.Name==name).FirstOrDefault();
         }
+
+        public bool IfExists(WorkTask workTask)
+        {
+            return _companyContext.WorkTasks.Any(x => x.Project.Id == workTask.Project.Id && x.Name == workTask.Name);
+        }
     }
 }

@@ -37,6 +37,11 @@ namespace CompanySalaries.Repositories
             return _companyContext.EmployeesTask.FirstOrDefault(x => x.WorkTask == WorkTask).WorkedHoursOnTask;
         }
 
+        public bool IfExists(EmployeeTask employeeTask)
+        {
+            return _companyContext.EmployeesTask.Any(x => x.Employee == employeeTask.Employee && x.WorkTask == employeeTask.WorkTask);
+        }
+
         public bool IsEmployeeTaskDone(WorkTask WorkTask)
         {
             var result = _companyContext.EmployeesTask.FirstOrDefault(x => x.WorkTask == WorkTask);

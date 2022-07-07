@@ -8,6 +8,6 @@ namespace CompanySalaries.Repositories
         public IEnumerable<Employee> GetAllEmployees();
         public Employee GetEmployeeByName(string name);
         public Employee GetEmployeeById(int id);
-        public bool Exists(Employee employee);
+        public bool IfExists(Employee employee);
     }
 }

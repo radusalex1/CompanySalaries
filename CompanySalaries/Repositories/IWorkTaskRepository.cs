@@ -8,5 +8,6 @@ namespace CompanySalaries.Repositories
         public IEnumerable<WorkTask> GetAllWorkTasks();
         public WorkTask GetWorkTaskByName(string name);
         public WorkTask GetWorkTaskById(int id);
+        public bool IfExists(WorkTask workTask);
     }
 }

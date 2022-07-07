@@ -17,7 +17,7 @@ namespace CompanySalaries.Repositories
             _companyContext.SaveChanges();
         }
 
-        public bool Exists(Employee employee)
+        public bool IfExists(Employee employee)
         {
             return _companyContext.Employees.Any(e=>e.PhoneNumber==employee.PhoneNumber);
         }

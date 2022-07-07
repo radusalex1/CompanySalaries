@@ -24,9 +24,14 @@ namespace CompanySalaries.Controllers
 
         [HttpPost]
         [Route("/AddProject")]
-        public void AddProject(Project project)
+        public async Task<IActionResult> AddProject(Project project)
         {
+            if(projectRepository.IfExists(project))
+            {
+                return BadRequest("Project already exists");
+            }
             projectRepository.AddProject(project);
+            return Ok("Project added succesfully");
         }
 
     }

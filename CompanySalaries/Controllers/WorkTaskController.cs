@@ -10,13 +10,13 @@ namespace CompanySalaries.Controllers
     [ApiController]
     public class WorkTaskController : ControllerBase
     {
-        public IWorkTaskRepository WorkTaskRepository;
+        public IWorkTaskRepository workTaskRepository;
         public IProjectRepository projectRepository;
         public ITypeOfWorkTaskRepository typeOfWorkTaskRepository;
 
         public WorkTaskController(IWorkTaskRepository WorkTaskRepository, IProjectRepository projectRepository, ITypeOfWorkTaskRepository typeOfWorkTaskRepository)
         {
-            this.WorkTaskRepository = WorkTaskRepository;
+            this.workTaskRepository = WorkTaskRepository;
             this.projectRepository = projectRepository;
             this.typeOfWorkTaskRepository = typeOfWorkTaskRepository;
         }
@@ -25,17 +25,17 @@ namespace CompanySalaries.Controllers
         [Route("/GetAllWorkTasks")]
         public IEnumerable<WorkTask> GetAllWorkTasks()
         {
-            return WorkTaskRepository.GetAllWorkTasks();
+            return workTaskRepository.GetAllWorkTasks();
         }
 
         [HttpPost]
         [Route("/AddWorkTask")]
         public async Task<IActionResult> AddWorkTask(WorkTaskDTO WorkTask)
         {
-            var nameBaseProject = projectRepository.GetProjectById(WorkTask.BaseProjectId);
+            var baseProject = projectRepository.GetProjectById(WorkTask.BaseProjectId);
             var typeofWorkTask = typeOfWorkTaskRepository.GetByName(WorkTask.TypeOfWorkTask);
 
-            if(nameBaseProject == null || typeofWorkTask == null)
+            if(baseProject == null || typeofWorkTask == null)
             {
                 return BadRequest("Invalid WorkTask");
             }
@@ -46,12 +46,17 @@ namespace CompanySalaries.Controllers
                 Description = WorkTask.Description,
                 TypeOfWorkTask = typeofWorkTask,
                 Price = WorkTask.Price,
-                Project = nameBaseProject,
+                Project = baseProject,
             };
+
+            if (workTaskRepository.IfExists(newWorkTask))
+            {
+                return BadRequest("Task Already exists");
+            }
 
             if (WorkTaskValidations.ValidateWorkTask(newWorkTask))
             {
-                WorkTaskRepository.AddWorkTask(newWorkTask);
+                    workTaskRepository.AddWorkTask(newWorkTask);
             }
             else
             {

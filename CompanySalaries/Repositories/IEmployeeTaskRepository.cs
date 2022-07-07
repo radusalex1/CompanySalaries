@@ -9,5 +9,6 @@ namespace CompanySalaries.Repositories
         public IEnumerable<EmployeeTask> GetByStartWeek(DateTime startWeek);
         public bool IsEmployeeTaskDone(WorkTask WorkTask);
         public int GetHoursByWorkTask(WorkTask WorkTask);
+        public bool IfExists(EmployeeTask employeeTask);
     }
 }

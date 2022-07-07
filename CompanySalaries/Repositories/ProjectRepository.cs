@@ -32,5 +32,10 @@ namespace CompanySalaries.Repositories
             return _companyContext.Projects.FirstOrDefault(p => p.Name == name);
 
         }
+
+        public bool IfExists(Project project)
+        {
+            return _companyContext.Projects.Any(p => p.Name == project.Name);
+        }
     }
 }

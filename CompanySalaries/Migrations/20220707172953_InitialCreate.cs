@@ -91,8 +91,6 @@ namespace CompanySalaries.Migrations
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     WorkTaskId = table.Column<int>(type: "int", nullable: false),
                     StartWeek = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WorkedHoursOnTask = table.Column<int>(type: "int", nullable: false),
                     Done = table.Column<int>(type: "int", nullable: false)
                 },

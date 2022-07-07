@@ -60,12 +60,6 @@ namespace CompanySalaries.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("StartWeek")
                         .HasColumnType("datetime2");
 

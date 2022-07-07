@@ -13,13 +13,13 @@ namespace CompanySalaries.Controllers
 
         public IEmployeeTaskRepository employeeTaskRepository;
         public IEmployeeRepository employeeRepository;
-        public IWorkTaskRepository WorkTaskRepository;
+        public IWorkTaskRepository workTaskRepository;
 
-        public EmployeeTaskController(IEmployeeTaskRepository employeeTaskRepository,IEmployeeRepository employeeRepository,IWorkTaskRepository WorkTaskRepository)
+        public EmployeeTaskController(IEmployeeTaskRepository employeeTaskRepository,IEmployeeRepository employeeRepository,IWorkTaskRepository workTaskRepository)
         {
             this.employeeTaskRepository = employeeTaskRepository;
             this.employeeRepository = employeeRepository;
-            this.WorkTaskRepository = WorkTaskRepository;
+            this.workTaskRepository = workTaskRepository;
         }
 
         [HttpGet]
@@ -34,7 +34,7 @@ namespace CompanySalaries.Controllers
         public async Task<IActionResult> AddEmployeeTask(EmployeeTaskDTO employeeTaskDTO)
         {
             var employee = employeeRepository.GetEmployeeById(employeeTaskDTO.EmployeeId);
-            var worktask = WorkTaskRepository.GetWorkTaskById(employeeTaskDTO.WorkTaskId);
+            var worktask = workTaskRepository.GetWorkTaskById(employeeTaskDTO.WorkTaskId);
 
             if(employee == null || worktask==null)
             {
@@ -46,11 +46,15 @@ namespace CompanySalaries.Controllers
                 Employee = employee,
                 WorkTask = worktask,  
                 StartWeek = employeeTaskDTO.StartWeek,
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now,
                 WorkedHoursOnTask= employeeTaskDTO.WorkedHoursOnTask,
                 Done = employeeTaskDTO.Done
             };
+
+            if (employeeTaskRepository.IfExists(employeeTask))
+            {
+                return BadRequest("This employee is already assigned to this type of work");
+            }
+
             employeeTaskRepository.AddEmployeeTask(employeeTask);
             return Ok("Data inserted successfully");
         }

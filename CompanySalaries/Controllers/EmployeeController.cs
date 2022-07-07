@@ -26,7 +26,7 @@ namespace CompanySalaries.Controllers
         [Route("/AddEmployee")]
         public async Task<IActionResult> AddEmployee(Employee employee)
         {
-            if (!employeeRepository.Exists(employee))
+            if (!employeeRepository.IfExists(employee))
             {
                 employeeRepository.AddEmployee(employee);
             }
