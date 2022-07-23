@@ -33,6 +33,5 @@ namespace CompanySalaries.Controllers
             projectRepository.AddProject(project);
             return Ok("Project added succesfully");
         }
-
     }
 }

@@ -65,6 +65,5 @@ namespace CompanySalaries.Controllers
 
             return Ok("Object Created Successfully");
         }
-
     }
 }
