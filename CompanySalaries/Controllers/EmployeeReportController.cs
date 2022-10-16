@@ -21,7 +21,7 @@ namespace CompanySalaries.Controllers
         }
 
         /// <summary>
-        /// This method should get a refactor. - by radu
+        ///
         /// </summary>
         /// <param name="StartWeek"></param>
         /// <returns></returns>
@@ -32,6 +32,7 @@ namespace CompanySalaries.Controllers
             var groupedByEmployee = employeeTaskRepository.GetByStartWeek(StartWeek)
                 .GroupBy(e => e.Employee)
                 .ToDictionary(gdc => gdc.Key, gdc => gdc.ToList());
+
             var result = new List<EmployeeReportDTO>();
 
             foreach (var group in groupedByEmployee)
@@ -47,6 +48,7 @@ namespace CompanySalaries.Controllers
                 };
                 result.Add(employeeReportDTO);
             }
+
             return result;
         }
 
@@ -60,6 +62,7 @@ namespace CompanySalaries.Controllers
             weeklySalary = 0;
             foreach (var item in group.Value)
             {
+                
                 workedHours = item.WorkedHoursOnTask;
 
                 if (item.WorkTask.TypeOfWorkTask.Name == "special")
